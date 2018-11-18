@@ -33,8 +33,8 @@
                 <h4><a href="#bgl">BGL</a></h4>
                 <h4><a href="#pcsampling">点云</a></h4>
                 <ul class="sideul">
-                    <li class="sideli"><a href="#pcsampling">采样</a></li>
-                    <li class="sideli"><a href="#pcnormal">法向量</a></li>
+                    <li class="sideli"><a href="/bgl/document#pcsampling" target="_blank">采样</a></li>
+                    <li class="sideli"><a href="/bgl/document#pcnormal" target="_blank">法向量</a></li>
                     <li class="sideli"><a href="#pcsmooth">光滑</a></li>
                     <li class="sideli"><a href="#pcoutlier">去飞点孤立项</a></li>
                     <li class="sideli"><a href="#pcoverlap">去重影</a></li>
@@ -50,14 +50,14 @@
                     <li class="sideli"><a href="#meshdetailenhancement">几何细节增强</a></li>
                     <li class="sideli"><a href="#meshtopologyconsolidation">拓扑几何修整</a></li>
                     <li class="sideli"><a href="#meshfillhole">补洞</a></li>
-                    <li class="sideli"><a href="#meshloopsubdivision">细分加密</a></li>
+                    <li class="sideli"><a href="/bgl/document#meshsubdivision" target="_blank">细分加密</a></li>
                     <li class="sideli"><a href="#meshsimplification">简化</a></li>
                     <li class="sideli"><a href="#meshremesh">重新网格化</a></li>
                     <li class="sideli"><a href="#meshoptimization">网格优化</a></li>
                     <li class="sideli"><a href="#meshcompressheightfield">高度场压缩</a></li>
                     <li class="sideli"><a href="#meshsplit">切割</a></li>
                     <li class="sideli"><a href="#meshoffset">抽壳</a></li>
-                    <li class="sideli"><a href="#meshsampling">网格采样</a></li>
+                    <li class="sideli"><a href="/bgl/document#meshsampling" target="_blank">网格采样</a></li>
                     <li class="sideli"><a href="#meshdeformation">网格变形</a></li>
                 </ul>
                 <h4><a href="#meshunfold">纹理</a></h4>
@@ -72,8 +72,8 @@
                     <li class="sideli"><a href="#meshgeodesics">测地线</a></li>
                     <li class="sideli"><a href="#planecuttingline">平面截线</a></li>
                     <li class="sideli"><a href="#smoothmeshcurve">网格曲线光滑</a></li>
-                    <li class="sideli"><a href="#meshareavolume">网格面积和体积</a></li>
-                    <li class="sideli"><a href="#meshcurvature">网格曲率</a></li>
+                    <li class="sideli"><a href="/bgl/document#meshtool" target="_blank">网格面积和体积</a></li>
+                    <li class="sideli"><a href="/bgl/document#meshcurvature" target="_blank">网格曲率</a></li>
                     <li class="sideli"><a href="#pointtomeshdistance">点到网格距离</a></li>
                     <li class="sideli"><a href="#rayintersectwithmesh">射线与网格求交点</a></li>
                     <li class="sideli"><a href="#wallthickness">网格厚度</a></li>
@@ -106,132 +106,6 @@
                 <a name="usageintroduction"><h5>使用简介</h5></a>
                 <p>1. 头文件: 所有的头文件都在include文件夹里, 设置好头文件包含路径, 在使用api的源文件里包含Gpp.h</p>
                 <p>2. 库: 设置好对应版本动态链接库的路径. 如果是Windows平台，需要在预处理里定义宏GPP_DLL_EXPORT，WIN32</p>
-                <hr class="featurette-divider">
-
-
-                <a name="pcsampling"><h5>点云采样</h5></a>
-<pre class="prettyprint">
-ErrorCode SamplePointCloud::UniformSample(const IPointCloud* pointCloud, Int sampleCount, Int* sampleIndex, Int seedId = 0, SampleQuality quality = SAMPLE_QUALITY_HIGH);
-</pre>
-                <p>均匀采样：采样结果分布均匀</p>
-                <p>pointCloud: 点云数据</p>
-                <p>sampleCount: 采样的目标点数，点数应小于点云点的个数</p>
-                <p>sampleIndex: 返回采样点的索引结果，需要在调用api之前分配好内存</p>
-                <p>seedId: 采样种子点，不同的种子点得到的采样结果不一样</p>
-                <p>quality: 采样质量，目前有SAMPLE_QUALITY_LOW和SAMPLE_QUALITY_HIGH两种类型</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-<pre class="prettyprint">
-    // 示例
-    GPP::Int* sampleIndex = new GPP::Int[targetPointCount];
-    GPP::ErrorCode res = GPP::SamplePointCloud::UniformSample(pointCloud, targetPointCount, sampleIndex);
-</pre>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode SamplePointCloud::GeometrySample(const IPointCloud* pointCloud, Int sampleCount, Int* sampleIndex, Real uniformWeight = 0.1, Int neighborCount = 9, Int seedId = 0, SampleQuality quality = SAMPLE_QUALITY_HIGH);
-</pre>
-                <p>几何采样：采样结果在几何特征明显的地方数量会多一些</p>
-                <p>pointCloud: 点云数据</p>
-                <p>sampleCount: 采样的目标点数，点数应小于点云点的个数</p>
-                <p>sampleIndex: 返回采样点的索引结果，需要在调用api之前分配好内存</p>
-                <p>uniformWeight: 采样结果的均匀性，范围[0, 1]. 参数越大，均匀性越好.</p>
-                <p>neighborCount: 点云邻域个数，主要用于计算几何特征. 默认参数为9，如果点云均匀性不好，可以提高此参数以获得更好的稳定性</p>
-                <p>seedId: 采样种子点，不同的种子点得到的采样结果不一样</p>
-                <p>quality: 采样质量，目前有SAMPLE_QUALITY_LOW和SAMPLE_QUALITY_HIGH两种类型</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode SamplePointCloud::GridSample(const IPointCloud* pointCloud, Real interval, std::vector< Int >& sampleIndex);
-</pre>
-                <p>格栅采样：根据点间距把空间分为一个一个的格子，每个格子采样一个点，并且使得采样的点云尽量均匀。</p>
-                <p>pointCloud: 点云数据</p>
-                <p>interval: 点间距</p>
-                <p>sampleIndex: 返回采样点的索引结果</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode SamplePointCloud::Simplify(const IPointCloud* pointCloud, Int resolution, IPointCloud* simplifiedCloud, const std::vector< Real >* pointFields = NULL, std::vector< Real >* simplifiedFields = NULL);
-</pre>
-                <p>点云简化：点云根据分辨率resolution把其所在的包围盒在xyz方向离散化为小方格，每个小方格内的点云会做平均，然后得到一个简化的点云</p>
-                <p>pointCloud: 点云数据</p>
-                <p>resolution: 简化分辨率。简化时先计算点云的包围盒，然后根据分辨率把包围盒在xyz方向做均匀细分。</p>
-                <p>simplifiedCloud: 简化后的点云，需要实现分配好内存。</p>
-                <p>pointFields: 网格可以自带一些属性，具体格式和<a href="#pcreconstruction">点云重建</a>里的pointFields一样</p>
-                <p>simplifiedFields: 简化后点云的点属性，格式和pointFields一样。</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-                <pre class="prettyprint">
-ErrorCode SampleGrid::UniformSample(const IGridPointCloud* pointCloud, Int sampleCount, std::vector< std::pair< Int, Int > >* sampleIndex);
-</pre>
-                <p>有序点云均匀采样</p>
-                <p>pointCloud：输入的有序点云</p>
-                <p>sampleCount：采样的目标点数，点数应小于点云点的个数</p>
-                <p>sampleIndex：返回采样点的索引结果</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-                <pre class="prettyprint">
-ErrorCode SampleGrid::GeometrySample(const IGridPointCloud* pointCloud, Int sampleCount, Real uniformWeight, std::vector< std::pair< Int, Int > >* sampleIndex);
-</pre>
-                <p>有序点云几何采样，采样结果在几何特征明显的地方数量会多一些</p>
-                <p>pointCloud：输入的有序点云</p>
-                <p>sampleCount：采样的目标点数，点数应小于点云点的个数</p>
-                <p>uniformWeight：采样结果的均匀性，范围[0, 1]. 参数越大，均匀性越好.</p>
-                <p>sampleIndex：返回采样点的索引结果</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-                <pre class="prettyprint">
-ErrorCode SampleGrid::Simplify(const IGridPointCloud* pointCloud, Real interval, GridSimplifyType type, IGridPointCloud* simplifiedCloud);
-</pre>
-                <p>有序点云简化：根据点间距做点云简化。</p>
-                <p>pointCloud：输入的有序点云</p>
-                <p>interval：简化目标点间距。注意，此间距是一个参考值，简化后的点云密度在此值附近，不一定严格相等。</p>
-                <p>type：GRID_SIMPLIFY_SAMPLE-从原始点云采样；GRID_SIMPLIFY_MERGE-简化时候会合并点云</p>
-                <p>simplifiedCloud：简化后的点云。</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="featurette-divider">
-
-                <a name="pcnormal"><h5>点云法向量</h5></a>
-                <p>点云法线的介绍可以参考<a class="code" href="/notes/pointcloudnormal" target="_blank">点云法线</a>，特别是如何给点云法线完美的定向。</p>
-<pre class="prettyprint">
-ErrorCode ConsolidatePointCloud::CalculatePointCloudNormal(IPointCloud* pointCloud, bool isDepthImage = false, Int neighborCount = 9);
-</pre>
-                <p>pointCloud：点云数据</p>
-                <p>isDepthImage: 如果点云是深度图数据(一般扫描仪扫描一帧的点云数据), 所有法线的z坐标会大于0(面向相机), 并且计算速度更加快</p>
-                <p>neighborCount: 计算法线时点邻域个数. 默认值是9，如果点云均匀性不好，可以适当调大参数来保证计算结果的稳定. 如果是深度点云，可以设置为5.</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode ConsolidatePointCloud::SmoothNormal(IPointCloud* pointCloud, Real normalWeight = 1.0, Int neighborCount = 9, const std::vector< Int >* fixedIndex = NULL);
-</pre>
-                <p>pointCloud：点云数据</p>
-                <p>normalWeight: 权重越大，Smooth程度越小. 参数范围是(0, infinity), 默认为1.0</p>
-                <p>neighborCount: 光滑法线时点邻域个数. 默认值是9，如果点云均匀性不好，可以适当调大参数来保证计算结果的稳定</p>
-                <p>fixedIndex: 法线需要固定的点索引。</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode ConsolidateGrid::CalculateGridNormal(IGridPointCloud* pointCloud);
-</pre>
-                <p>计算有序点云法线</p>
-                <p>pointCloud：输入的有序点云</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-                <pre class="prettyprint">
-ErrorCode ConsolidateGrid::SmoothGridNormal(IGridPointCloud* pointCloud, Int neighborWidth, Int iterationCount);
-</pre>
-                <p>光滑有序点云法线</p>
-                <p>pointCloud：输入的有序点云</p>
-                <p>neighborWidth：点云光滑邻域大小</p>
-                <p>iterationCount：光滑迭代次数</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
                 <hr class="featurette-divider">
 
 
@@ -719,28 +593,6 @@ ErrorCode FillMeshHole::BridgeEdges(ITriMesh* triMesh, const Int edge1VertexIds[
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
                 <hr class="featurette-divider">
 
-                <a name="meshloopsubdivision"><h5>Loop细分</h5></a>
-<pre class="prettyprint">
-ErrorCode LoopSubdivideMesh(ITriMesh* triMesh, const std::vector< Real >* vertexFields = NULL, std::vector< Real >* insertedVertexFields = NULL);
-</pre>
-                <p>triMesh: 网格数据</p>
-                <p>vertexFields: 网格可以自带一些属性，具体格式和<a href="#pcreconstruction">点云重建</a>里的pointFields一样</p>
-                <p>insertedVertexFields: 新增加顶点的属性</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="featurette-divider">
-
-                <a name="meshdesify"><h5>网格加密</h5></a>
-<pre class="prettyprint">
-ErrorCode DensifyMesh(ITriMesh* triMesh, Int targetVertexCount, const std::vector< Real >* vertexFields = NULL, std::vector< Real >* insertedVertexFields = NULL);
-</pre>
-                <p>加密网格顶点，新增加的顶点位于输入网格的三角面片上，加密后的网格不会改变输入网格的几何</p>
-                <p>triMesh: 网格数据</p>
-                <p>targetVertexCount: 加密网格的目标顶点个数，应大于输入网格顶点个数</p>
-                <p>vertexFields: 网格可以自带一些属性，具体格式和<a href="#pcreconstruction">点云重建</a>里的pointFields一样</p>
-                <p>insertedVertexFields: 新增加顶点的属性</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="featurette-divider">
-
                 <a name="meshsimplification"><h5>网格简化</h5></a>
 <pre class="prettyprint">
 ErrorCode QuadricSimplify(ITriMesh* triMesh, Int targetVertexCount, bool keepBoundary = true, const std::vector< Real >* vertexFields = NULL, std::vector< Real >* simplifiedVertexFields = NULL);
@@ -1003,20 +855,6 @@ ErrorCode UniformApproximate(ITriMesh* triMesh, Real offsetValue);
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
                 <hr class="featurette-divider">
 
-                <a name="meshsampling"><h5>网格采样</h5></a>
-<pre class="prettyprint">
-ErrorCode UniformSample(const ITriMesh* triMesh, Int sampleCount, Real sharpAngle, std::vector< PointOnFace >& pointsOnFace, std::vector< PointOnEdge >& pointsOnEdge, std::vector< Int >& pointsOnVertex, bool excludeBoundary);
-</pre>
-                <p>网格采样：在网格上均匀采样点。</p>
-                <p>triMesh: 网格数据。</p>
-                <p>sampleCount: 采样点数。</p>
-                <p>sharpAngle: 网格边的相邻面夹角大于sharpAngle，则认为是一个sharp边。sharp边上一定会采点。参数范围是(0, 180 * ONE_RADIAN)。</p>
-                <p>pointsOnFace: 采样点－三角形内部的点</p>
-                <p>pointsOnEdge: 采样点－网格边上的点</p>
-                <p>pointsOnVertex: 采样点－网格顶点上的点</p>
-                <p>excludeBoundary: 采样时是否排除网格边界。</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="featurette-divider">
 
                 <a name="meshdeformation"><h5>网格变形</h5></a>
 <pre class="prettyprint">
@@ -1027,17 +865,43 @@ class DeformMesh</a>
 <pre class="prettyprint">ErrorCode Init(ITriMesh* triMesh, const std::vector< bool >& vertexFixFlags, bool consolidateGeometry = true);</pre>
                 <p>初始化网格变形</p>
                 <p>triMesh: 网格数据。</p>
-                <p>vertexFixFlags: 网格顶点类型：0-自由顶点；1-固定顶点。</p>
+                <p>vertexFixFlags: 网格顶点类型：0-自由顶点；1-约束顶点。约束顶点一般包含两部分：固定点和约束移动点（其实固定点，可以看成是位置固定的约束移动点）。 变形过程中，自由顶点根据约束顶点的几何来做相应的变形。</p>
                 <p>consolidateGeometry: 是否处理退化几何，默认参数为true。</p>
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
                 <hr class="line-divider">
 
 <pre class="prettyprint">ErrorCode Deform(const std::vector< Int >& targetVertexIds, const std::vector< Vector3 >& targetCoords, DeformMeshType deformType);</pre>
                 <p>网格变形</p>
-                <p>targetVertexIds: 网格变形位置约束的顶点索引。</p>
-                <p>targetCoords: 网格变形的位置约束，目标位置。targetVertexIds和targetCoords是一一对应的。特别注意，约束顶点一定是Init中的固定顶点。</p>
+                <p>targetVertexIds: 网格变形时约束顶点索引。</p>
+                <p>targetCoords: 网格变形时约束顶点的目标位置。targetVertexIds和targetCoords是一一对应的。特别注意，此处的目标顶点一定是Init中的约束顶点。</p>
                 <p>deformType: 网格变形类型：快速变形或精确变形。</p>
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
+<pre class="prettyprint">
+    // 一个变形示例
+    int vertexCount = triMesh->GetVertexCount();
+    std::vector< bool > vertexFixFlags(vertexCount, 0); // 只有两个点是约束点，其它全是自由点
+    int moveVertexId = vertexCount / 2;  
+    int fixedVertexId = 0;
+    vertexFixFlags.at(moveVertexId) = 1;
+    vertexFixFlags.at(fixedVertexId) = 1;
+    GPP::DeformMesh deformer;
+    GPP::ErrorCode res = deformer.Init(triMesh, vertexFixFlags);
+    if (res != GPP_NO_ERROR)
+    {
+        return false;
+    }
+    std::vector< int > targetVertexIds;
+    targetVertexIds.push_back(moveVertexId);
+    std::vector< GPP::Vector3 > targetVertexCoords(1);
+    // 随意设置一个目标点坐标
+    targetVertexCoords.at(0) = triMesh->GetVertexCoord(moveVertexId) + triMesh->GetVertexNormal(moveVertexId) * 0.5;
+    res = deformer.Deform(targetVertexIds, targetVertexCoords, GPP::DEFORM_MESH_TYPE_ACCURATE);
+    if (res != GPP_NO_ERROR)
+    {
+        return false;
+    }
+    triMesh->UpdateNormal();
+</pre>
                 <hr class="featurette-divider">
 
                 <a name="meshunfold"><h5>网格UV展开</h5></a>
@@ -2248,57 +2112,8 @@ ErrorCode SmoothCurveCrossMesh(const ITriMesh* triMesh, const std::vector< Point
                 <p>iterationCount: 光滑次数</p>
                 <p>smoothCurve: 光滑后的曲线。注意，smoothCurve和curve没有一一对应的关系。</p>
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-
-
                 <hr class="featurette-divider">
-                <a name="meshareavolume"><h5>网格面积和体积</h5></a>
-<pre class="prettyprint">
-ErrorCode ComputeArea(const ITriMesh* triMesh, Real& area);
-</pre>
-                <p>triMesh: 网格数据</p>
-                <p>area: 网格面积</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
 
-                <pre class="prettyprint">
-ErrorCode ComputeVolume(const ITriMesh* triMesh, Real& volume);
-</pre>
-                <p>triMesh: 网格数据. 网格需要是闭合的，没有自交. 如果不满足，计算的体积会有误差</p>
-                <p>volume: 网格体积</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="featurette-divider">  
-
-                <a name="meshcurvature"><h5>网格曲率</h5></a>
-<pre class="prettyprint">
-ErrorCode ComputeMeanCurvature(const ITriMesh* triMesh, std::vector< Real >& curvature);
-</pre>
-                <p>网格平均曲率测量</p>
-                <p>triMesh: 网格数据</p>
-                <p>curvature: 网格平均曲率</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode ComputeGaussCurvature(const ITriMesh* triMesh, std::vector< Real >& curvature);
-</pre>
-                <p>网格高斯曲率测量</p>
-                <p>triMesh: 网格数据</p>
-                <p>curvature: 网格高斯曲率</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-                <hr class="line-divider">
-
-<pre class="prettyprint">
-ErrorCode ComputePrincipalCurvature(const ITriMesh* triMesh, std::vector< Real >& minCurvature, std::vector< Real >& maxCurvature, std::vector< Vector3 >& minDirs, std::vector< Vector3 >& maxDirs);
-</pre>
-                <p>网格主曲率测量</p>
-                <p>triMesh: 网格数据</p>
-                <p>minCurvature：最小主曲率值</p>
-                <p>maxCurvature：最大主曲率值</p>
-                <p>minDirs：最小主曲率方向</p>
-                <p>maxDirs：最大主曲率方向</p>
-                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
-
-                <hr class="featurette-divider">  
 
                 <a name="pointtomeshdistance"><h5>点到网格距离</h5></a>
 <pre class="prettyprint">

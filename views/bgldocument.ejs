@@ -50,6 +50,7 @@
                     <li class="sideli"><a href="#meshtriangulation">带约束Delaunay三角化</a></li>
                     <li class="sideli"><a href="#meshsampling">网格采样</a></li>
                     <li class="sideli"><a href="#meshoffset">抽壳(等距网格)</a></li>
+                    <li class="sideli"><a href="#meshcurvature">网格曲率</a></li>
                     <li class="sideli"><a href="#meshcutcurve">UV展开割线</a></li>
                     <li class="sideli"><a href="#meshtool">网格工具箱</a></li>
                 </ul>
@@ -1491,6 +1492,39 @@ ErrorCode OffsetMesh::UniformApproximate(ITriMesh* triMesh, Real offsetValue);
                 <p>offsetValue: 等距值。正值代表平移方向朝网格外，负值代表平移方向朝网格内。</p>
                 <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
                 <hr class="featurette-divider">
+
+
+                <a name="meshcurvature"><h5>网格曲率</h5></a>
+<pre class="prettyprint">
+ErrorCode ComputeMeanCurvature(const ITriMesh* triMesh, std::vector< Real >& curvature);
+</pre>
+                <p>网格平均曲率测量</p>
+                <p>triMesh: 网格数据</p>
+                <p>curvature: 网格平均曲率</p>
+                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
+                <hr class="line-divider">
+
+<pre class="prettyprint">
+ErrorCode ComputeGaussCurvature(const ITriMesh* triMesh, std::vector< Real >& curvature);
+</pre>
+                <p>网格高斯曲率测量</p>
+                <p>triMesh: 网格数据</p>
+                <p>curvature: 网格高斯曲率</p>
+                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
+                <hr class="line-divider">
+
+<pre class="prettyprint">
+ErrorCode ComputePrincipalCurvature(const ITriMesh* triMesh, std::vector< Real >& minCurvature, std::vector< Real >& maxCurvature, std::vector< Vector3 >& minDirs, std::vector< Vector3 >& maxDirs);
+</pre>
+                <p>网格主曲率测量</p>
+                <p>triMesh: 网格数据</p>
+                <p>minCurvature：最小主曲率值</p>
+                <p>maxCurvature：最大主曲率值</p>
+                <p>minDirs：最小主曲率方向</p>
+                <p>maxDirs：最大主曲率方向</p>
+                <p>返回值: 如果成功则返回GPP_NO_ERROR</p>
+
+                <hr class="featurette-divider">  
 
 
                 <a name="meshcutcurve"><h5>UV展开割线</h5></a>
